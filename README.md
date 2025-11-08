@@ -1,13 +1,13 @@
 # OTP(HOTP/TOTP) package for Golang
-This is a simple OTP(HOTP/TOTP) implementation in Go and provide support for 
-Google Authenticator app. Currently, It only provide HMAC-SHA1 for the hashing 
+This is a simple OTP(HOTP/TOTP) implementation in Go that can be used with the
+Google Authenticator app. Currently, It only support HMAC-SHA1 for the hashing 
 algorithm.
 
 ## Simple TOTP Example
 ```go
-digit := otp.OTPDigitSix
-otpCode, err := otp.GenerateTOTPCode(keyBytes, time.Now(), digit)
-fmt.Println(ZeroFill(otpCode, digit))
+digit := otp.DigitSix
+otpCode, err := otp.GenerateTOTPCode(rawByteSecret, time.Now(), digit)
+fmt.Println(otp.ZeroFill(otpCode, digit))
 ```
 
 ## TOTP for Google Authenticator
@@ -18,7 +18,7 @@ fmt.Println(ZeroFill(otpCode, digit))
 key, err := otp.GenerateGoogleAuthKey(otp.GoogleAuthKeyParam{
 			Issuer:           "Example",
 			AccountName:      "alice@example.com",
-			Type:             otp.OTPTypeTOTP,
+			Type:             otp.TypeTOTP,
 			SecretByteLength: 10,
 })
 
@@ -31,10 +31,12 @@ GenerateQRCode(key.String())
 ### Validating
 ```go
 secret := key.Secret // get the secret from the key
-digit := otp.GoogleAuthDigit
 rawByteSecret, err := otp.DecodeBase32Secret(secret)
-ok, err := otp.ValidateTOTPCode(code, rawByteSecret, time.Now, otp.OTPDigitSix)
+var otpInput string
+fmt.Scanf("%s", &otpInput)
+code, err := strconv.Atoi(otpInput)
+ok, err := otp.ValidateTOTPCode(int32(code), rawByteSecret, time.Now(), otp.DigitSix)
 if ok {
-    // valid
+	// Valid OTP
 }
 ```

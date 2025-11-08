@@ -13,25 +13,28 @@ const (
 	period = 30
 )
 
-type OTPType string
+// Type define the type of the OTP(HOTP or TOTP)
+type Type string
 
 const (
-	OTPTypeHOTP OTPType = "hotp"
-	OTPTypeTOTP OTPType = "totp"
+	TypeHOTP Type = "hotp"
+	TypeTOTP Type = "totp"
 )
 
-type OTPDigit int
+// Digit define the type of the number of digit for the OTP.
+// Currently the most common digits are 6 and 8.
+type Digit int
 
 const (
-	OTPDigitSix   OTPDigit = 6
-	OTPDigitEight OTPDigit = 8
+	DigitSix   Digit = 6
+	DigitEight Digit = 8
 )
 
-func (d OTPDigit) Modulus() uint32 {
+func (d Digit) Modulus() uint32 {
 	switch d {
-	case OTPDigitSix:
+	case DigitSix:
 		return 1_000_000
-	case OTPDigitEight:
+	case DigitEight:
 		return 100_000_000
 	}
 
@@ -74,11 +77,11 @@ func DecodeBase32Secret(secret string) ([]byte, error) {
 	return base32encoder.DecodeString(secret)
 }
 
-func ZeroFill(code int32, d OTPDigit) string {
+func ZeroFill(code int32, d Digit) string {
 	switch d {
-	case OTPDigitEight:
+	case DigitEight:
 		return fmt.Sprintf("%08d", code)
-	case OTPDigitSix:
+	case DigitSix:
 		return fmt.Sprintf("%06d", code)
 	}
 

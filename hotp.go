@@ -9,7 +9,7 @@ import (
 )
 
 // GenerateHOTPCode generates otp code based on `secret` and uses counter as its moving factor.
-func GenerateHOTPCode(secret []byte, counter uint64, d OTPDigit) (int32, error) {
+func GenerateHOTPCode(secret []byte, counter uint64, d Digit) (int32, error) {
 	counterBytes := make([]byte, 8) // 8 bytes as defined in the standard RFC-4226
 	binary.BigEndian.PutUint64(counterBytes, counter)
 
@@ -24,7 +24,7 @@ func GenerateHOTPCode(secret []byte, counter uint64, d OTPDigit) (int32, error) 
 
 // ValidateHOTPCode validates a OTP code by comparing it with the generated code
 // using secret and the counter as its moving factor.
-func ValidateHOTPCode(code int32, secret []byte, counter uint64, d OTPDigit) (bool, error) {
+func ValidateHOTPCode(code int32, secret []byte, counter uint64, d Digit) (bool, error) {
 	expected, err := GenerateHOTPCode(secret, counter, d)
 	if err != nil {
 		return false, err
@@ -35,7 +35,7 @@ func ValidateHOTPCode(code int32, secret []byte, counter uint64, d OTPDigit) (bo
 }
 
 // DynamicTruncation as defined in the rfc4226#section-5.4
-func DynamicTruncation(b []byte, d OTPDigit) (int32, error) {
+func DynamicTruncation(b []byte, d Digit) (int32, error) {
 	if len(b) != 20 {
 		return 0, errors.New("invalid hash length")
 	}

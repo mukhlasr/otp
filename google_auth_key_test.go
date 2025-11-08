@@ -82,7 +82,7 @@ func TestGoogleAuthKeyString(t *testing.T) {
 				Issuer:           "Example",
 				AccountName:      "alice@wonderland.com",
 				SecretByteLength: 10,
-				Type:             otp.OTPTypeTOTP,
+				Type:             otp.TypeTOTP,
 			},
 			Secret: "SUPERSECRETKEY",
 		}
@@ -96,7 +96,7 @@ func TestGoogleAuthKeyString(t *testing.T) {
 				GoogleAuthKeyParam: otp.GoogleAuthKeyParam{
 					AccountName:      "alice@wonderland.com",
 					SecretByteLength: 10,
-					Type:             otp.OTPTypeTOTP,
+					Type:             otp.TypeTOTP,
 				},
 				Secret: "SUPERSECRETKEY",
 			}
@@ -111,7 +111,7 @@ func TestGoogleAuthKeyString(t *testing.T) {
 				GoogleAuthKeyParam: otp.GoogleAuthKeyParam{
 					Issuer:           "Example",
 					SecretByteLength: 10,
-					Type:             otp.OTPTypeTOTP,
+					Type:             otp.TypeTOTP,
 				},
 				Secret: "SUPERSECRETKEY",
 			}

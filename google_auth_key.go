@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	googleAuthDigit = OTPDigitSix
+	googleAuthDigit = DigitSix
 )
 
 type GoogleAuthKeyParam struct {
@@ -17,7 +17,7 @@ type GoogleAuthKeyParam struct {
 	// AccountName of the user
 	AccountName string
 	// Type of the OTP(hotp/totp)
-	Type OTPType
+	Type Type
 
 	// SecretByteLength defines the length of bytes will be read from RandReader
 	SecretByteLength uint32

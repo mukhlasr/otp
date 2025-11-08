@@ -14,13 +14,13 @@ func GetTOTPCounter(t time.Time) uint64 {
 
 // GenerateTOTPCode generates otp code based on `secret` and uses time `t“
 // that's converted to a counter as its moving factor.
-func GenerateTOTPCode(secret []byte, t time.Time, d OTPDigit) (int32, error) {
+func GenerateTOTPCode(secret []byte, t time.Time, d Digit) (int32, error) {
 	return GenerateHOTPCode(secret, GetTOTPCounter(t), d)
 }
 
 // ValidateTOTPCode validates a OTP code by comparing it with the generated
 // code using secret and time t that's converted to a counter as its moving
 // factor.
-func ValidateTOTPCode(passcode int32, secret []byte, t time.Time, d OTPDigit) (bool, error) {
+func ValidateTOTPCode(passcode int32, secret []byte, t time.Time, d Digit) (bool, error) {
 	return ValidateHOTPCode(passcode, secret, GetTOTPCounter(t), d)
 }

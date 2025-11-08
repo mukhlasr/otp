@@ -8,7 +8,7 @@ import (
 )
 
 func TestGenerateTOTPCode(t *testing.T) {
-	// test case from the https://datatracker.ietf.org/doc/html/rfc4226#page-32
+	// test case from the https://datatracker.ietf.org/doc/html/rfc6238#page-15
 	secret := []byte("12345678901234567890")
 	digit := otp.OTPDigitEight
 	expected := []struct {
@@ -53,7 +53,7 @@ func TestGenerateTOTPCode(t *testing.T) {
 }
 
 func TestValidateTOTPCode(t *testing.T) {
-	// test case from the https://datatracker.ietf.org/doc/html/rfc4226#page-32
+	// test case from the https://datatracker.ietf.org/doc/html/rfc6238#page-15
 	secret := []byte("12345678901234567890")
 	digit := otp.OTPDigitEight
 	expected := []struct {

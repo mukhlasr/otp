@@ -1,4 +1,5 @@
-// Package otp provides functionalities for generating and validating HOTP(IETF RFC4226)/TOTP(IETF RFC6238) codes.
+// Package otp provides functionalities for generating and validating
+// HOTP(IETF RFC4226) and TOTP(IETF RFC6238) codes.
 package otp
 
 import (
@@ -71,4 +72,15 @@ func GenerateBase32Secret(byteLen uint32, randomReader io.Reader) (string, error
 // DecodeBase32Secret decodes the encoded secret and returns its raw byte form to be used by the OTP functions
 func DecodeBase32Secret(secret string) ([]byte, error) {
 	return base32encoder.DecodeString(secret)
+}
+
+func ZeroFill(code int32, d OTPDigit) string {
+	switch d {
+	case OTPDigitEight:
+		return fmt.Sprintf("%08d", code)
+	case OTPDigitSix:
+		return fmt.Sprintf("%06d", code)
+	}
+
+	return fmt.Sprint(code)
 }

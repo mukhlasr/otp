@@ -4,14 +4,36 @@ package otp
 
 import (
 	"crypto/rand"
+	"crypto/sha1"
+	"crypto/sha256"
+	"crypto/sha512"
+	"encoding/base32"
 	"errors"
 	"fmt"
+	"hash"
 	"io"
 )
 
+type Algo string
+
 const (
-	period = 30
+	AlgoSHA1   = "sha1"
+	AlgoSHA256 = "sha256"
+	AlgoSHA512 = "sha512"
 )
+
+func (a Algo) Hash() hash.Hash {
+	switch a {
+	case AlgoSHA1:
+		return sha1.New()
+	case AlgoSHA256:
+		return sha256.New()
+	case AlgoSHA512:
+		return sha512.New()
+	}
+
+	return hash.Hash(nil)
+}
 
 // Type define the type of the OTP(HOTP or TOTP)
 type Type string
@@ -27,6 +49,7 @@ type Digit int
 
 const (
 	DigitSix   Digit = 6
+	DigitSeven Digit = 7
 	DigitEight Digit = 8
 )
 
@@ -34,6 +57,8 @@ func (d Digit) Modulus() uint32 {
 	switch d {
 	case DigitSix:
 		return 1_000_000
+	case DigitSeven:
+		return 10_000_000
 	case DigitEight:
 		return 100_000_000
 	}
@@ -62,6 +87,8 @@ func GenerateRandomSecret(byteLen uint32, randomReader io.Reader) ([]byte, error
 	return b, nil
 
 }
+
+var base32encoder = base32.StdEncoding.WithPadding(base32.NoPadding)
 
 // GenerateBase32Secret generates an otp secret with length = `byteLen` encoded
 // in base32. This is required for the otp to work with Google Authenticator.

@@ -1,7 +1,6 @@
 package otp
 
 import (
-	"encoding/base32"
 	"fmt"
 	"io"
 	"net/url"
@@ -11,6 +10,8 @@ const (
 	googleAuthDigit = DigitSix
 )
 
+// GoogleAuthKeyParam defines the structure of otp key supported by Google
+// Authenticator App.
 type GoogleAuthKeyParam struct {
 	// Issuer of the otp
 	Issuer string
@@ -56,7 +57,7 @@ func (k *GoogleAuthKey) String() string {
 	q = k.appendQueryIfNotEmpty(q, "issuer", k.Issuer)
 	q = k.appendQueryIfNotEmpty(q, "algorithm", "SHA1")
 	q = k.appendQueryIfNotEmpty(q, "digits", fmt.Sprint(googleAuthDigit))
-	q = k.appendQueryIfNotEmpty(q, "period", fmt.Sprint(period))
+	q = k.appendQueryIfNotEmpty(q, "period", fmt.Sprint(totpDefaultPeriod))
 
 	u := &url.URL{
 		Scheme:   "otpauth",
@@ -81,5 +82,3 @@ func (k *GoogleAuthKey) appendQueryIfNotEmpty(raw, key, value string) string {
 
 	return raw + "&" + q
 }
-
-var base32encoder = base32.StdEncoding.WithPadding(base32.NoPadding)
